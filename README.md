@@ -106,8 +106,21 @@ Covers:
 
 ## 🌍 Localization
 
-Localized error messages are managed via `.resx` resources.  
-The system defaults to English, but additional cultures (e.g. `de`, `sk`) can be added easily by creating `Messages.xx.resx` files.
+The application supports localizable error messages using `.resx` resource files. Supported UI cultures:
+
+- `en` (English) — default
+- `de` (German)
+- `sk` (Slovak)
+
+### Available Messages
+
+| Key                  | English                                      | German (de)                                              | Slovak (sk)                                                     |
+|-----------------------|----------------------------------------------|-----------------------------------------------------------|------------------------------------------------------------------|
+| `Error_InvalidVatRate`  | Invalid VAT rate. Allowed values are 10, 13, or 20. | Ungültiger Mehrwertsteuersatz. Erlaubte Werte sind 10, 13 oder 20. | Neplatná sadzba DPH. Povolené hodnoty sú 10, 13 alebo 20.         |
+| `Error_AmountMissing`   | You must provide exactly one of NetAmount, GrossAmount, or VatAmount. | Sie müssen genau einen Wert von NetAmount, GrossAmount oder VatAmount angeben. | Musíte zadať presne jednu z hodnôt: NetAmount, GrossAmount alebo VatAmount. |
+| `Error_UnexpectedState` | Unexpected null state in VAT calculation logic. | Unerwarteter Nullzustand in der Mehrwertsteuerberechnung. | Neočakávaný prázdny stav v logike výpočtu DPH.                   |
+
+The appropriate message is returned based on the `Accept-Language` header or default culture.
 
 ---
 
