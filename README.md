@@ -124,20 +124,63 @@ The appropriate message is returned based on the `Accept-Language` header or def
 
 ---
 
+## 🎨 Angular Frontend
+
+A simple Angular standalone app is used as the frontend UI for testing and visualizing VAT calculations.
+
+### Features
+
+- Standalone Angular 17+ project
+- Styled with Angular Material (form fields, buttons, card layout)
+- Single form with Net, Gross, VAT inputs + dropdown for VAT rate
+- Validates exactly one amount input
+- Results section with Material elevation and color highlights
+- CORS-enabled for API communication
+
+### Example UI Components Used
+
+- `<mat-card>` for layout
+- `<mat-form-field>` + `<input matInput>`
+- `<mat-select>` for rate dropdown
+- `<button mat-raised-button>` for submission
+- Responsive CSS and centered form with results section
+
+### Sample API Integration
+
+```ts
+this.http.post('http://localhost:5245/api/vatcalculator/calculate', values)
+  .subscribe({
+    next: (res) => { this.result = res; },
+    error: (err) => { this.error = err.error?.error || 'API error occurred.'; }
+  });
+```
+
+To run the frontend:
+
+```bash
+cd vat-calculator-frontend
+ng serve
+```
+
+Ensure the backend is running at the correct port (e.g. `http://localhost:5245`) and CORS is enabled.
+
+---
+
 ## 🛠️ Requirements
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- Visual Studio 2022 v17.8+ or VS Code with C# extension
+- Node.js + Angular CLI
+- Visual Studio 2022 v17.8+ or VS Code
 
 ---
 
 ## 💡 Future Ideas
 
-- Add Docker support for containerized deployment
-- Angular or Blazor client for VAT calculation UI
-- Azure deployment sample
-- Redis-based caching for frequently requested rates
-- Multi-country VAT rules engine
+- Docker support
+- Frontend routing and language toggle
+- Integration tests and CI/CD pipeline
+- Multi-country VAT support
+- Azure-hosted demo site
 
 ---
 

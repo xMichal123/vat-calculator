@@ -1,5 +1,7 @@
 using VatCalculatorApi.Services;
 
+var corsPolicy = "AllowAngularDev";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IVatCalculatorService, VatCalculatorService>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -33,6 +46,8 @@ var localizationOptions = new RequestLocalizationOptions()
 app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
+
+app.UseCors(corsPolicy);
 
 app.MapControllers();
 

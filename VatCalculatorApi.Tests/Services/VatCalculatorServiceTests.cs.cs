@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Moq;
 using VatCalculatorApi.Models;
 using VatCalculatorApi.Services;
@@ -13,13 +14,16 @@ namespace VatCalculatorApi.Tests.Services
 
         public VatCalculatorServiceTests()
         {
-            var mockLocalizer = new Mock<IStringLocalizer<VatCalculatorService>>();
-
-            // Setup fake values for any key
-            mockLocalizer.Setup(l => l[It.IsAny<string>()])
+            // Mock the localizer
+            var localizerMock = new Mock<IStringLocalizer<VatCalculatorService>>();
+            localizerMock.Setup(l => l[It.IsAny<string>()])
                          .Returns((string key) => new LocalizedString(key, key));
 
-            _service = new VatCalculatorService(mockLocalizer.Object);
+            // Mock the logger
+            var loggerMock = new Mock<ILogger<VatCalculatorService>>();
+
+            // Create the service with both mocks
+            _service = new VatCalculatorService(localizerMock.Object, loggerMock.Object);
         }
 
         [Fact]

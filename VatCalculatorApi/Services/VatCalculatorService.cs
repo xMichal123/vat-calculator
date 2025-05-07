@@ -6,22 +6,32 @@ namespace VatCalculatorApi.Services;
 public class VatCalculatorService : IVatCalculatorService
 {
     private readonly IStringLocalizer _localizer;
+    private readonly ILogger<VatCalculatorService> _logger;
 
-    public VatCalculatorService(IStringLocalizer<VatCalculatorService> localizer)
+    public VatCalculatorService(IStringLocalizer<VatCalculatorService> localizer, ILogger<VatCalculatorService> logger)
     {
         _localizer = localizer;
+        _logger = logger;
     }
 
     public VatCalculationResponse Calculate(VatCalculationRequest request)
     {
+        _logger.LogInformation("Calculating VAT using rate {VatRate}", request.VatRate);
+
         if (request.VatRate <= 0 || !new[] { 10m, 13m, 20m }.Contains(request.VatRate))
+        {
+            _logger.LogWarning("Invalid VAT rate: {VatRate}", request.VatRate);
             throw new ArgumentException(_localizer["Error_InvalidVatRate"]);
+        }
 
         int nonNulls = new[] { request.NetAmount, request.GrossAmount, request.VatAmount }
                         .Count(x => x.HasValue);
 
         if (nonNulls != 1)
+        {
+            _logger.LogWarning("You must provide exactly one of NetAmount, GrossAmount, or VatAmount.");
             throw new ArgumentException(_localizer["Error_AmountMissing"]);
+        }
 
         var rate = request.VatRate / 100m;
 
